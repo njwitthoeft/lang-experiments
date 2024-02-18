@@ -1,5 +1,7 @@
 [workspace]
 members = [
     "pest-csv",
-    "pest-calc-tutorial"
+    "pest-calc-tutorial",
+    "pest-ini"
 ]
+resolver = "2"

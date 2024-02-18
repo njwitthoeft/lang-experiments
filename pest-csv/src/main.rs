@@ -37,10 +37,10 @@ fn parse_then_sum_and_count(file: &str) -> ParseSumCount {
         }
     }
 
-    return ParseSumCount {
+    ParseSumCount {
         sum: field_sum,
         count: record_count,
-    };
+    }
 }
 
 fn main() {

@@ -1,0 +1,22 @@
+on: push
+
+name: Checks
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    env:
+      RUSTFLAGS: "-D warnings"
+    steps:
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Format Check
+        run: cargo fmt --check --all
+
+      - name: Clippy Check
+        run: cargo clippy --all
+
+      - name: Test
+        run: cargo test --all

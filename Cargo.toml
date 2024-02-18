@@ -3,5 +3,5 @@ members = [
     "pest-csv",
     "pest-calc-tutorial",
     "pest-ini"
-]
+, "pest-json"]
 resolver = "2"

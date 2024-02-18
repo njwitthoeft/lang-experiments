@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 enum JSONValue<'a> {
     Object(Vec<(&'a str, JSONValue<'a>)>),
     Array(Vec<JSONValue<'a>>),
@@ -25,6 +27,6 @@ fn serialize_jsonvalue(val: &JSONValue) -> String {
         JV::String(s) => format!("\"{}\"", s),
         JV::Number(n) => format!("{}", n),
         JV::Boolean(b) => format!("{}", b),
-        JV::Null => format!("null"),
+        JV::Null => "null".to_string(),
     }
 }

@@ -1,4 +1,11 @@
 #![allow(unused)]
+use pest::error::Error;
+
+use pest_derive::Parser;
+
+#[derive(Parser)]
+#[grammar = "json.pest"]
+struct JSONParser;
 
 enum JSONValue<'a> {
     Object(Vec<(&'a str, JSONValue<'a>)>),
@@ -30,3 +37,5 @@ fn serialize_jsonvalue(val: &JSONValue) -> String {
         JV::Null => "null".to_string(),
     }
 }
+
+fn parse_json_file(file: &str) -> Result<JSONValue, Error<Rule>> {}

@@ -4,7 +4,7 @@ object = {
     "{" ~ "}" | 
     "{" ~ pair ~ ("," ~ pair)* ~ "}"
 }
-pair { string ~ ":" ~ value }
+pair = { string ~ ":" ~ value }
 
 array = {
     "[" ~ "]" | 
@@ -19,17 +19,17 @@ null = { "null" }
 string = ${ "\"" ~ inner ~ "\"" }
 inner = @{ char* }
 
-char {
+char = {
     !("\"" | "\\" ) ~ ANY
     | "\\" ~ ("\"" | "\\" | "/" | "b" | "f" | "n" | "r" | "t" )
     | "\\" ~ ("u" ~ ASCII_HEX_DIGIT{4})
 }
 
-number @{
+number = @{
     "-"?
-    ~ ("0" | ASCII_NONZERO_DIGIT ~ ASCII_DIGIT*),
-    ~ ("." ~ ASCII_DIGIT*)?,
-    ~ (^"e" ~ ("+", "-")? ASCII_DIGIT+)?
+    ~ ("0" | ASCII_NONZERO_DIGIT ~ ASCII_DIGIT*)
+    ~ ("." ~ ASCII_DIGIT*)?
+    ~ (^"e" ~ ("+" | "-")? ~ ASCII_DIGIT+)?
 }
 
 json = _{ SOI ~ (object | array) ~ EOI }

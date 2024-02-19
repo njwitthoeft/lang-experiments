@@ -3,6 +3,7 @@ members = [
     "pest-csv",
     "pest-calc-tutorial",
     "pest-ini",
-    "pest-json"
+    "pest-json",
+    "pest-jlang"
 ]
 resolver = "2"

@@ -58,16 +58,14 @@ pub enum AstNode {
     Str(CString),
 }
 
+#[allow(clippy::result_large_err)]
 pub fn parse(source: &str) -> Result<Vec<AstNode>, Error<Rule>> {
     let mut ast = vec![];
 
     let pairs = JParser::parse(Rule::program, source)?;
     for pair in pairs {
-        match pair.as_rule() {
-            Rule::expr => {
-                ast.push(AstNode::Print(Box::new(build_ast_from_expr(pair))));
-            }
-            _ => {}
+        if pair.as_rule() == Rule::expr {
+            ast.push(AstNode::Print(Box::new(build_ast_from_expr(pair))))
         }
     }
     Ok(ast)
@@ -95,7 +93,7 @@ fn build_ast_from_expr(pair: pest::iterators::Pair<Rule>) -> AstNode {
         Rule::terms => {
             let terms: Vec<AstNode> = pair.into_inner().map(build_ast_from_term).collect();
             match terms.len() {
-                1 => terms.get(0).unwrap().clone(),
+                1 => terms.first().unwrap().clone(),
                 _ => AstNode::Terms(terms),
             }
         }
@@ -164,7 +162,7 @@ fn build_ast_from_term(pair: pest::iterators::Pair<Rule>) -> AstNode {
             let istr = pair.as_str();
             let (sign, istr) = match &istr[..1] {
                 "_" => (-1, &istr[1..]),
-                _ => (1, &istr[..]),
+                _ => (1, istr),
             };
             let integer: i32 = istr.parse().unwrap();
             AstNode::Integer(sign * integer)
@@ -173,7 +171,7 @@ fn build_ast_from_term(pair: pest::iterators::Pair<Rule>) -> AstNode {
             let dstr = pair.as_str();
             let (sign, dstr) = match &dstr[..1] {
                 "_" => (-1.0, &dstr[1..]),
-                _ => (1.0, &dstr[..]),
+                _ => (1.0, dstr),
             };
             let mut flt: f64 = dstr.parse().unwrap();
             if flt != 0.0 {
